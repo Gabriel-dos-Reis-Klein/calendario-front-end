@@ -1,0 +1,13 @@
+<p-toolbar>
+    <ng-template #start>
+      @for (menu of menus(); track $index) {
+      <p-button [icon]="menu.icon" [label]="menu.label" class="mr-2"
+      (onClick)="selectMenu($index)"
+        text
+        [severity]="menu.selected ? 'primary': 'secondary'"
+        [routerLink]="menu.route"
+      />
+      }
+    </ng-template>
+  </p-toolbar>
+  
