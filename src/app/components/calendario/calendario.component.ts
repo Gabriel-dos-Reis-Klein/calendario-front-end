@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-calendario',
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonModule],
   templateUrl: './calendario.component.html',
   styleUrl: './calendario.component.css'
 })
