@@ -1,10 +1,20 @@
-<div class="calendario-titulo">
+<div class="flex gap-2 mt-5">
     <div>
-        <button (click)="alterarMes(-1)">ant.</button>
+        <p-button 
+        label="Ant."
+        icon="pi pi-arrow-left"
+        severity="secondary"
+        (onClick)="alterarMes(-1)"
+        />
     </div>
     <div class="calendario-titulo-mes-ano">{{dataAtual | date : 'MMM yyyy'}}</div>
     <div>
-        <button (click)="alterarMes(+1)">prox.</button>
+        <p-button 
+        label="Prox."
+        icon="pi pi-arrow-right"
+        severity="secondary"
+        (onClick)="alterarMes(+1)"
+        />
     </div>
 </div>
 <div class="calendario-dias">
