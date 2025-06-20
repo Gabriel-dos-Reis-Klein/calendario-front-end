@@ -2,17 +2,18 @@ import { Component, signal } from '@angular/core';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { RouterLink } from '@angular/router';
+import { AccordionModule } from 'primeng/accordion';
 
 @Component({
   selector: 'app-header',
-  imports: [ToolbarModule, ButtonModule, RouterLink],
+  imports: [ToolbarModule, ButtonModule, RouterLink, AccordionModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
   menus = signal<any[]>([
     {
-      label: 'Dashboard',
+      label: 'Calendário',
       icon: 'pi pi-chart-bar',
       selected: true,
       route: 'calendario'

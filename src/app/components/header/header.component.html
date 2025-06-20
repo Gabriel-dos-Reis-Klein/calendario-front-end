@@ -1,13 +1,23 @@
-<p-toolbar>
-    <ng-template #start>
-      @for (menu of menus(); track $index) {
-      <p-button [icon]="menu.icon" [label]="menu.label" class="mr-2"
-      (onClick)="selectMenu($index)"
-        text
-        [severity]="menu.selected ? 'primary': 'secondary'"
-        [routerLink]="menu.route"
-      />
-      }
-    </ng-template>
-  </p-toolbar>
-  
+<div class="card flex justify-center">
+  <p-accordion class="flex justify-right" expandIcon="pi pi-plus-circle" collapseIcon="pi pi-minus-circle" value="0">
+    <p-accordion-panel value="0">
+      <p-accordion-header></p-accordion-header>
+      <p-accordion-content>
+        <p class="m-0">
+          <p-toolbar>
+            <ng-template #start>
+              @for (menu of menus(); track $index) {
+                <p-button [icon]="menu.icon" [label]="menu.label" class="mr-2"
+                (onClick)="selectMenu($index)"
+                text
+                [severity]="menu.selected ? 'primary': 'secondary'"
+                [routerLink]="menu.route"
+                />
+              }
+            </ng-template>
+          </p-toolbar>
+        </p>
+      </p-accordion-content>
+    </p-accordion-panel>
+  </p-accordion>
+</div>
