@@ -1,21 +1,21 @@
-<div class="flex gap-2 mt-5">
-    <div>
+<div class="calendario-titulo">
+
         <p-button 
-        label="Ant."
+        label="Ant"
         icon="pi pi-arrow-left"
         severity="secondary"
         (onClick)="alterarMes(-1)"
         />
-    </div>
-    <div class="calendario-titulo-mes-ano">{{dataAtual | date : 'MMM yyyy'}}</div>
-    <div>
+
+        <div class="calendario-titulo-mes-ano">{{dataAtual | date : 'MMM yyyy'}}</div>
+
         <p-button 
-        label="Prox."
+        label="Prox"
         icon="pi pi-arrow-right"
         severity="secondary"
         (onClick)="alterarMes(+1)"
         />
-    </div>
+
 </div>
 <div class="calendario-dias">
     <ng-container *ngFor="let dia of diasCalendario; let i = index">
@@ -27,6 +27,14 @@
         class="calendario-dia"
         [class.calendario-quebrar-linha]="i % 7 === 0"
         [class.calendario-dia-nao-faz-parte-mes-atual]="dataAtual.getMonth() !== dia.getMonth()">
-        {{dia | date : 'dd'}}
+        {{dia | date : 'dd'}} 
+        @for (menu of menus(); track $index) {
+            <p-button [icon]="menu.icon" [label]="menu.label" class="mr-2"
+            (onClick)="selectMenu($index)"
+            text
+            [severity]="menu.selected ? 'primary': 'secondary'"
+            [routerLink]="menu.route"
+            />
+          }
     </div>
 </div>

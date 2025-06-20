@@ -1,3 +1,14 @@
+.calendario-titulo {
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr;
+    text-align: center;
+}
+
+.calendario-titulo-mes-ano {
+    font-size: 24px;
+    text-align: center;
+}
+
 .calendario-dias {
     display: grid;
     margin-top: 10px;
@@ -6,7 +17,11 @@
 }
 
 .calendario-dias div {
-    border: 1px solid #ccc;
+    border: 4px solid #000;
     font-size: 24px;
-    padding: 20px;
+    padding: 20px;  
+}
+
+.calendario-dia-nao-faz-parte-mes-atual {
+    color: #aaa;
 }

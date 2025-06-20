@@ -1,15 +1,41 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
+import { RouterLink } from '@angular/router';
+
 
 @Component({
   selector: 'app-calendario',
-  imports: [CommonModule, ButtonModule],
+  imports: [CommonModule, ButtonModule, RouterLink],
   templateUrl: './calendario.component.html',
   styleUrl: './calendario.component.css'
 })
+
+ 
 export class CalendarioComponent implements OnInit{
+  menus = signal<any[]>([
+    {
+      label: '',
+      icon: 'pi pi-plus-circle',
+      selected: false,
+      route: 'add'
+    },
+    {
+      label: '',
+      icon: 'pi pi-list',
+      selected: false,
+      route: 'list'
+    },
+  ]);
+
+  selectMenu(index: number) {
+    this.menus.update(menus => {
+      menus.forEach((m, i) => (m.selected = index === i));
+      return menus
+    });
+  };
+  
   dataAtual: Date = new Date();
   diasCalendario: Date[] = [];
 
