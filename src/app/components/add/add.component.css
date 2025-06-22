@@ -1,4 +1,58 @@
 /* Container Principal */
+.selected-date-banner {
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-radius: 16px;
+  padding: 1.5rem;
+  color: white;
+  animation: slideInDown 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.date-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.date-banner-content i.pi-calendar-plus {
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.date-info h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.date-info p {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+}
+
+.date-banner-content .p-button {
+  margin-left: auto;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.date-banner-content .p-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
 .task-creator-container {
   max-width: 900px;
   margin: 0 auto;

@@ -2,7 +2,28 @@
 
   <!-- Card Principal -->
   <p-card styleClass="task-card">
+    <div class="task-creator-container">
+  <!-- Card Principal -->
+  <p-card styleClass="task-card">
     
+    <!-- ✅ ADICIONE AQUI - Seção de Data Selecionada -->
+    <div *ngIf="selectedCalendarDate()" class="selected-date-banner">
+      <div class="date-banner-content">
+        <i class="pi pi-calendar-plus"></i>
+        <div class="date-info">
+          <h4>📅 Criando tarefa para:</h4>
+          <p>{{ selectedDateFormatted() }}</p>
+        </div>
+        <button 
+          type="button" 
+          class="p-button p-button-text p-button-sm"
+          (click)="clearSelectedDate()"
+        >
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
+    </div>
+
     <!-- Step 1: Informações Básicas -->
     <div class="form-step">
       <div class="step-header">
@@ -163,11 +184,12 @@
           <p-floatlabel>
             <p-calendar 
               id="dueDate"
-              [(ngModel)]="dueDate"
+              [(ngModel)]="dueDateSignal"
               [minDate]="today"
               [showIcon]="true"
               dateFormat="dd/mm/yy"
               [disabled]="isLoading()"
+              [showButtonBar]="true"
               class="modern-calendar"
             />
             <label for="dueDate">

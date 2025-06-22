@@ -1,3 +1,4 @@
+// ===== ADD.COMPONENT.TS (MODIFICADO) =====
 import { Component, signal, inject, output, computed, OnInit } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -16,8 +17,9 @@ import { BadgeModule } from 'primeng/badge';
 import { TagModule } from 'primeng/tag';
 import { AvatarModule } from 'primeng/avatar';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TaskService } from '../../services/task.service';
+import { ReactiveFormsModule } from '@angular/forms';
 
 // Interface para tipagem da tarefa
 export interface Task {
@@ -87,7 +89,8 @@ interface PriorityOption {
     DividerModule,
     BadgeModule,
     TagModule,
-    AvatarModule
+    AvatarModule,
+    ReactiveFormsModule
   ],
   templateUrl: './add.component.html',
   styleUrl: './add.component.css'
@@ -96,6 +99,7 @@ export class AddComponent implements OnInit {
   private messageService = inject(MessageService);
   private taskService = inject(TaskService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute); // ← ADICIONADO para receber parâmetros
   
   // Output para comunicar com componente pai
   taskAdded = output<Task>();
@@ -107,10 +111,13 @@ export class AddComponent implements OnInit {
   type = signal<TaskType | null>(null);
   priority = signal<TaskPriority>(TaskPriority.MEDIA);
   estimatedTime = signal(60); // em minutos
-  dueDate = signal<Date | null>(null);
+  dueDateSignal = signal<Date | null>(null);
   tags = signal<string[]>([]);
   urgent = signal(false);
   isLoading = signal(false);
+  
+  // ← ADICIONADO: Signal para armazenar a data recebida do calendário
+  selectedCalendarDate = signal<Date | null>(null);
   
   // Estados da UI
   showAdvancedOptions = signal(false);
@@ -132,6 +139,18 @@ export class AddComponent implements OnInit {
       [TaskPriority.CRITICA]: '#dc3545'
     };
     return colors[this.priority()];
+  });
+
+  // ← ADICIONADO: Computed para mostrar a data selecionada formatada
+  selectedDateFormatted = computed(() => {
+    const date = this.selectedCalendarDate();
+    if (!date) return '';
+    return date.toLocaleDateString('pt-BR', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
   });
 
   // Opções de tipos
@@ -213,6 +232,27 @@ export class AddComponent implements OnInit {
   ];
 
   ngOnInit() {
+    // ← MODIFICADO: Captura a data dos query params
+    this.route.queryParams.subscribe(params => {
+      if (params['data']) {
+        const receivedDate = new Date(params['data']);
+        this.selectedCalendarDate.set(receivedDate);
+        
+        // Define automaticamente como data de vencimento
+        this.dueDateSignal.set(receivedDate);
+        
+        console.log('📅 Data recebida do calendário:', this.selectedDateFormatted());
+        
+        // Mostra mensagem informativa
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Data selecionada',
+          detail: `Criando tarefa para ${this.selectedDateFormatted()}`,
+          life: 3000
+        });
+      }
+    });
+
     // Simula preview em tempo real
     this.setupPreview();
   }
@@ -235,15 +275,6 @@ export class AddComponent implements OnInit {
   }
 
   /**
-   * Avança para próximo step do formulário
-   */
-
-  /**
-   * Volta para step anterior
-   */
-  
-
-  /**
    * Alterna exibição de opções avançadas
    */
   toggleAdvancedOptions() {
@@ -254,18 +285,17 @@ export class AddComponent implements OnInit {
    * Converte minutos para horas formatadas
    */
   formatTime(minutes: number): string {
-  const hours = Math.floor(minutes / 60);
-  const mins = minutes % 60;
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
 
-  if (hours > 0 && mins > 0) {
-    return `${hours}h ${mins}min`;
-  } else if (hours > 0) {
-    return `${hours}h`;
-  } else {
-    return `${mins}min`;
+    if (hours > 0 && mins > 0) {
+      return `${hours}h ${mins}min`;
+    } else if (hours > 0) {
+      return `${hours}h`;
+    } else {
+      return `${mins}min`;
+    }
   }
-}
-
 
   /**
    * Sugere tags baseadas no tipo selecionado
@@ -293,27 +323,40 @@ export class AddComponent implements OnInit {
     }
   }
 
+  // ✅ ADICIONE AQUI - Método para limpar data
+  /**
+   * Remove a data selecionada do calendário
+   */
+  clearSelectedDate() {
+    this.selectedCalendarDate.set(null);
+    this.dueDateSignal.set(null);
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Data removida',
+      detail: 'A data pré-selecionada foi removida',
+      life: 2000
+    });
+  }
 
   /**
    * Cria uma nova tarefa
    */
   private createTask(): Task {
-  return {
-    id: `task-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-    title: this.title().trim(),
-    description: this.description().trim(),
-    type: this.type()!,
-    priority: this.priority(),
-    estimatedTime: this.estimatedTime(),
-    dueDate: this.dueDate() ?? undefined,
-    tags: this.tags(),
-    createdAt: new Date(),
-    completed: false,
-    urgent: this.urgent(),
-    progress: 0
-  };
-}
-
+    return {
+      id: `task-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      title: this.title().trim(),
+      description: this.description().trim(),
+      type: this.type()!,
+      priority: this.priority(),
+      estimatedTime: this.estimatedTime(),
+      dueDate: this.dueDateSignal() ?? undefined,
+      tags: this.tags(),
+      createdAt: new Date(),
+      completed: false,
+      urgent: this.urgent(),
+      progress: 0
+    };
+  }
 
   /**
    * Limpa o formulário
@@ -324,11 +367,12 @@ export class AddComponent implements OnInit {
     this.type.set(null);
     this.priority.set(TaskPriority.MEDIA);
     this.estimatedTime.set(60);
-    this.dueDate.set(null);
+    this.dueDateSignal.set(null);
     this.tags.set([]);
     this.urgent.set(false);
     this.formStep.set(1);
     this.showAdvancedOptions.set(false);
+    this.selectedCalendarDate.set(null); // ← ADICIONADO
   }
 
   /**
@@ -408,17 +452,16 @@ export class AddComponent implements OnInit {
   }
 
   get today(): Date {
-  return new Date();
-}
+    return new Date();
+  }
 
-selectedTypeLabel = computed(() => {
-  const selected = this.typeOptions.find(t => t.value === this.type());
-  return selected ? selected.label : undefined;
-});
+  selectedTypeLabel = computed(() => {
+    const selected = this.typeOptions.find(t => t.value === this.type());
+    return selected ? selected.label : undefined;
+  });
 
-selectedTypeColor = computed(() => {
-  const selected = this.typeOptions.find(t => t.value === this.type());
-  return selected ? selected.color : undefined;
-});
-
+  selectedTypeColor = computed(() => {
+    const selected = this.typeOptions.find(t => t.value === this.type());
+    return selected ? selected.color : undefined;
+  });
 }
