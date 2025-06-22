@@ -16,6 +16,8 @@ import { BadgeModule } from 'primeng/badge';
 import { TagModule } from 'primeng/tag';
 import { AvatarModule } from 'primeng/avatar';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { TaskService } from '../../services/task.service';
 
 // Interface para tipagem da tarefa
 export interface Task {
@@ -92,6 +94,8 @@ interface PriorityOption {
 })
 export class AddComponent implements OnInit {
   private messageService = inject(MessageService);
+  private taskService = inject(TaskService);
+  private router = inject(Router);
   
   // Output para comunicar com componente pai
   taskAdded = output<Task>();
@@ -365,9 +369,15 @@ export class AddComponent implements OnInit {
       
       console.log('🚀 Nova tarefa criada:', task);
       
-      this.taskAdded.emit(task);
+      // Adiciona no service em vez de emitir evento
+      this.taskService.addTask(task);
+      
+      this.taskAdded.emit(task); // mantém para compatibilidade
       this.resetForm();
       this.showSuccess();
+      
+      // Navega para a lista após salvar
+      this.router.navigate(['/list']);
       
     } catch (error) {
       console.error('❌ Erro ao salvar tarefa:', error);
@@ -410,8 +420,5 @@ selectedTypeColor = computed(() => {
   const selected = this.typeOptions.find(t => t.value === this.type());
   return selected ? selected.color : undefined;
 });
-
-
-
 
 }

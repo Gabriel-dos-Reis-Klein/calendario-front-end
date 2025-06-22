@@ -1,1 +1,63 @@
-<p>list works!</p>
+<div class="tasks-container">
+  <h2>Minhas Tarefas ({{ tasks().length }})</h2>
+  
+  <div *ngIf="tasks().length === 0" class="empty-state">
+    <p>Nenhuma tarefa criada ainda.</p>
+  </div>
+  
+  <div *ngIf="tasks().length > 0" class="tasks-grid">
+    <div *ngFor="let task of tasks()" class="task-item" [class.completed]="task.completed">
+      <!-- Cabeçalho da tarefa com botão de conclusão -->
+      <div class="task-header">
+        <h3 [class.completed-title]="task.completed">{{ task.title }}</h3>
+        <button 
+          class="complete-btn" 
+          [class.completed]="task.completed"
+          (click)="toggleTaskCompletion(task)"
+          [title]="task.completed ? 'Marcar como pendente' : 'Marcar como concluída'"
+        >
+          <span *ngIf="!task.completed">✓</span>
+          <span *ngIf="task.completed">↺</span>
+        </button>
+      </div>
+      
+      <!-- Descrição -->
+      <p [class.completed-text]="task.completed">{{ task.description }}</p>
+      
+      <!-- Meta informações -->
+      <div class="task-meta">
+        <span class="task-type" [class]="task.type">{{ task.type }}</span>
+        <span class="task-priority" [class]="task.priority">{{ task.priority }}</span>
+        <span *ngIf="task.urgent && !task.completed" class="task-urgent">🚨 Urgente</span>
+        <span *ngIf="task.completed" class="task-completed-badge">✅ Concluída</span>
+      </div>
+      
+      <!-- Informações adicionais -->
+      <div class="task-info">
+        <span class="task-time">{{ formatTime(task.estimatedTime) }}</span>
+        <span *ngIf="task.dueDate" class="task-date">{{ formatDate(task.dueDate) }}</span>
+      </div>
+      
+      <!-- Tags -->
+      <div *ngIf="task.tags.length > 0" class="task-tags">
+        <small *ngFor="let tag of task.tags" class="task-tag">#{{ tag }}</small>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Estatísticas -->
+  <div *ngIf="tasks().length > 0" class="task-stats">
+    <div class="stat-item">
+      <span class="stat-number">{{ taskCount() }}</span>
+      <span class="stat-label">Total</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">{{ completedTasks() }}</span>
+      <span class="stat-label">Concluídas</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">{{ pendingTasks() }}</span>
+      <span class="stat-label">Pendentes</span>
+    </div>
+  </div>
+</div>

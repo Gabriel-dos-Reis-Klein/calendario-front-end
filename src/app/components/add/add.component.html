@@ -213,6 +213,19 @@
     <p-divider />
     
     <div class="form-footer">
+      <!-- Botão Principal para Criar Tarefa -->
+      <div class="main-actions">
+        <button 
+          type="button"
+          class="create-button p-button p-button-lg"
+          [disabled]="!isFormValid() || isLoading()"
+          (click)="save()"
+        >
+          <i [class]="buttonIcon"></i>
+          {{ buttonLabel }}
+        </button>
+      </div>
+      
       <!-- Form Summary -->
       <div *ngIf="isFormValid()" class="form-summary">
         <div class="summary-card">
