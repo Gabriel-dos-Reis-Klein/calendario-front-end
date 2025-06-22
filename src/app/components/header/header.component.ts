@@ -19,7 +19,7 @@ export class HeaderComponent {
       route: 'calendario'
     },
     {
-      label: 'List',
+      label: 'Lista',
       icon: 'pi pi-list',
       selected: false,
       route: 'list'
