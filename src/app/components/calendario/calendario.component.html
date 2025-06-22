@@ -1,40 +1,51 @@
 <div class="calendario-titulo">
+    <p-button 
+    label="Ant"
+    icon="pi pi-arrow-left"
+    severity="secondary"
+    (onClick)="alterarMes(-1)"
+    />
 
-        <p-button 
-        label="Ant"
-        icon="pi pi-arrow-left"
-        severity="secondary"
-        (onClick)="alterarMes(-1)"
-        />
+    <div class="calendario-titulo-mes-ano">{{dataAtual | date : 'MMM yyyy'}}</div>
 
-        <div class="calendario-titulo-mes-ano">{{dataAtual | date : 'MMM yyyy'}}</div>
-
-        <p-button 
-        label="Prox"
-        icon="pi pi-arrow-right"
-        severity="secondary"
-        (onClick)="alterarMes(+1)"
-        />
-
+    <p-button 
+    label="Prox"
+    icon="pi pi-arrow-right"
+    severity="secondary"
+    (onClick)="alterarMes(+1)"
+    />
 </div>
+
 <div class="calendario-dias">
     <ng-container *ngFor="let dia of diasCalendario; let i = index">
         <div *ngIf="i < 7">
             <strong>{{ dia | date: 'EEEEE' }}</strong>
         </div>
     </ng-container>
+    
     <div *ngFor="let dia of diasCalendario; let i = index"
         class="calendario-dia"
         [class.calendario-quebrar-linha]="i % 7 === 0"
         [class.calendario-dia-nao-faz-parte-mes-atual]="dataAtual.getMonth() !== dia.getMonth()">
+        
         {{dia | date : 'dd'}} 
-        @for (menu of menus(); track $index) {
-            <p-button [icon]="menu.icon" [label]="menu.label" class="mr-2"
-            (onClick)="selectMenu($index)"
+        
+        <!-- Botão ADD passando a data específica -->
+        <p-button 
+            icon="pi pi-plus-circle" 
+            class="mr-2"
+            (onClick)="irParaAdd(dia)"
             text
-            [severity]="menu.selected ? 'primary': 'secondary'"
-            [routerLink]="menu.route"
-            />
-          }
+            severity="secondary"
+        />
+        
+        <!-- Botão LIST passando a data específica -->
+        <p-button 
+            icon="pi pi-list" 
+            class="mr-2"
+            (onClick)="irParaList(dia)"
+            text
+            severity="secondary"
+        />
     </div>
 </div>
