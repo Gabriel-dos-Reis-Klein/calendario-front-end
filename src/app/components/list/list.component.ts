@@ -1,16 +1,19 @@
 import { Component, inject, computed } from '@angular/core';
+import { Router } from '@angular/router';
 import { TaskService } from '../../services/task.service'; // ajuste o caminho
 import { Task } from '../add/add.component'; // ajuste o caminho
 import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-list',
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonModule],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
 })
 export class ListComponent {
   private taskService = inject(TaskService);
+  private router = inject(Router);
 
   // Obtém as tarefas do service de forma reativa
   tasks = this.taskService.tasks;
@@ -19,6 +22,13 @@ export class ListComponent {
   taskCount = computed(() => this.tasks().length);
   completedTasks = computed(() => this.tasks().filter(task => task.completed).length);
   pendingTasks = computed(() => this.tasks().filter(task => !task.completed).length);
+
+  /**
+   * Navega de volta ao calendário
+   */
+  voltarCalendario(): void {
+    this.router.navigate(['/calendario']);
+  }
 
   /**
    * Alterna o status de conclusão de uma tarefa

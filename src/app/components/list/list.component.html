@@ -1,8 +1,27 @@
 <div class="tasks-container">
-  <h2>Minhas Tarefas ({{ tasks().length }})</h2>
+  <!-- Header com botão de voltar -->
+  <div class="header-section">
+    <div class="header-content">
+      <h2>Minhas Tarefas ({{ tasks().length }})</h2>
+      <p-button 
+        label="📅 Voltar ao Calendário" 
+        icon="pi pi-calendar"
+        severity="secondary"
+        (onClick)="voltarCalendario()"
+        class="voltar-calendario-btn"
+      />
+    </div>
+  </div>
   
   <div *ngIf="tasks().length === 0" class="empty-state">
     <p>Nenhuma tarefa criada ainda.</p>
+    <p-button 
+      label="📅 Ir ao Calendário" 
+      icon="pi pi-calendar"
+      severity="info"
+      (onClick)="voltarCalendario()"
+      class="empty-calendar-btn"
+    />
   </div>
   
   <div *ngIf="tasks().length > 0" class="tasks-grid">
