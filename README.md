@@ -26,7 +26,7 @@ de um calendário e de uma lista de tarefas que o usuário ira usar
 
 ## Referências
 ### Websites
-- Documento do Angular [Angular]((https://angular.dev/))
+- Documento do Angular [Angular](https://angular.dev/)
 - Documento do PrimeNg [PrimeNG](https://primeng.org/)
 
 ### Repositório Base
