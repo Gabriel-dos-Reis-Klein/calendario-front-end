@@ -28,6 +28,7 @@ de um calendário e de uma lista de tarefas que o usuário ira usar
 ### Websites
 - Documento do Angular [Angular](https://angular.dev/)
 - Documento do PrimeNg [PrimeNG](https://primeng.org/)
+- Como construir um calendário com Angular [Guia] (https://consolelog.com.br/componente-calendario-mensal-angular/)
 
 ### Repositório Base
 -
