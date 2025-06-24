@@ -1,51 +1,62 @@
-<div class="calendario-titulo">
-    <p-button 
-    label="Ant"
-    icon="pi pi-arrow-left"
-    severity="secondary"
-    (onClick)="alterarMes(-1)"
-    />
+<div class="calendario-container">
+    <div class="calendario-titulo">
+        <p-button 
+            label="Anterior"
+            icon="pi pi-chevron-left"
+            severity="secondary"
+            (onClick)="alterarMes(-1)"
+        />
 
-    <div class="calendario-titulo-mes-ano">{{dataAtual | date : 'MMM yyyy'}}</div>
-
-    <p-button 
-    label="Prox"
-    icon="pi pi-arrow-right"
-    severity="secondary"
-    (onClick)="alterarMes(+1)"
-    />
-</div>
-
-<div class="calendario-dias">
-    <ng-container *ngFor="let dia of diasCalendario; let i = index">
-        <div *ngIf="i < 7">
-            <strong>{{ dia | date: 'EEEEE' }}</strong>
+        <div class="calendario-titulo-mes-ano">
+            {{dataAtual | date : 'MMMM yyyy' : '' : 'pt-BR'}}
         </div>
-    </ng-container>
-    
-    <div *ngFor="let dia of diasCalendario; let i = index"
-        class="calendario-dia"
-        [class.calendario-quebrar-linha]="i % 7 === 0"
-        [class.calendario-dia-nao-faz-parte-mes-atual]="dataAtual.getMonth() !== dia.getMonth()">
-        
-        {{dia | date : 'dd'}} 
-        
-        <!-- Botão ADD passando a data específica -->
+
         <p-button 
-            icon="pi pi-plus-circle" 
-            class="mr-2"
-            (onClick)="irParaAdd(dia)"
-            text
+            label="Próximo"
+            icon="pi pi-chevron-right"
             severity="secondary"
+            (onClick)="alterarMes(+1)"
         />
+    </div>
+
+    <div class="calendario-dias">
+        <!-- Cabeçalho dos dias da semana -->
+        <ng-container *ngFor="let dia of diasCalendario; let i = index">
+            <div *ngIf="i < 7" class="calendario-header-dia">
+                {{ dia | date: 'EEEEE' : '' : 'pt-BR' }}
+            </div>
+        </ng-container>
         
-        <!-- Botão LIST passando a data específica -->
-        <p-button 
-            icon="pi pi-list" 
-            class="mr-2"
-            (onClick)="irParaList(dia)"
-            text
-            severity="secondary"
-        />
+        <!-- Células dos dias -->
+        <div *ngFor="let dia of diasCalendario; let i = index"
+            class="calendario-dia"
+            [class.calendario-dia-nao-faz-parte-mes-atual]="dataAtual.getMonth() !== dia.getMonth()">
+            
+            <div class="calendario-dia-numero">
+                {{dia | date : 'dd'}}
+            </div>
+            
+            <div class="calendario-dia-acoes">
+                <!-- Botão ADD passando a data específica -->
+                <p-button 
+                    icon="pi pi-plus" 
+                    (onClick)="irParaAdd(dia)"
+                    text
+                    severity="secondary"
+                    pTooltip="Adicionar evento"
+                    tooltipPosition="top"
+                />
+                
+                <!-- Botão LIST passando a data específica -->
+                <p-button 
+                    icon="pi pi-list" 
+                    (onClick)="irParaList(dia)"
+                    text
+                    severity="secondary"
+                    pTooltip="Ver eventos"
+                    tooltipPosition="top"
+                />
+            </div>
+        </div>
     </div>
 </div>

@@ -1,27 +1,215 @@
+.calendario-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .calendario-titulo {
     display: grid;
-    grid-template-columns: 1fr 5fr 1fr;
-    text-align: center;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .calendario-titulo-mes-ano {
-    font-size: 24px;
+    font-size: 28px;
+    font-weight: 600;
     text-align: center;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .calendario-dias {
     display: grid;
-    margin-top: 10px;
     grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+/* Cabeçalho dos dias da semana */
+.calendario-header-dia {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 15px 8px;
     text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.calendario-dias div {
-    border: 4px solid #000;
-    font-size: 24px;
-    padding: 20px;  
+/* Células dos dias */
+.calendario-dia {
+    background: white;
+    min-height: 100px;
+    padding: 12px 8px;
+    position: relative;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin: 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
+.calendario-dia:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+}
+
+/* Número do dia */
+.calendario-dia-numero {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+/* Dias que não fazem parte do mês atual */
 .calendario-dia-nao-faz-parte-mes-atual {
-    color: #aaa;
+    background: #f1f3f4 !important;
+    color: #9e9e9e !important;
+}
+
+.calendario-dia-nao-faz-parte-mes-atual .calendario-dia-numero {
+    color: #bdbdbd;
+}
+
+.calendario-dia-nao-faz-parte-mes-atual:hover {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    background: #f1f3f4 !important;
+}
+
+/* Container para os botões */
+.calendario-dia-acoes {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    margin-top: auto;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.calendario-dia:hover .calendario-dia-acoes {
+    opacity: 1;
+}
+
+/* Customização específica para os botões PrimeNG */
+.calendario-dia .p-button {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    font-size: 12px !important;
+}
+
+.calendario-dia .p-button.p-button-text {
+    background: rgba(79, 172, 254, 0.1) !important;
+    border: 1px solid rgba(79, 172, 254, 0.3) !important;
+    color: #4facfe !important;
+}
+
+.calendario-dia .p-button.p-button-text:hover {
+    background: #4facfe !important;
+    color: white !important;
+    transform: scale(1.1);
+}
+
+/* Botão de adicionar */
+.calendario-dia .p-button:first-child {
+    background: rgba(46, 204, 113, 0.1) !important;
+    border: 1px solid rgba(46, 204, 113, 0.3) !important;
+    color: #2ecc71 !important;
+}
+
+.calendario-dia .p-button:first-child:hover {
+    background: #2ecc71 !important;
+    color: white !important;
+}
+
+/* Navegação do mês */
+.calendario-titulo .p-button {
+    border-radius: 25px !important;
+    padding: 12px 20px !important;
+    font-weight: 600 !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease !important;
+}
+
+.calendario-titulo .p-button:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .calendario-container {
+        padding: 10px;
+    }
+    
+    .calendario-titulo {
+        padding: 15px;
+        gap: 10px;
+    }
+    
+    .calendario-titulo-mes-ano {
+        font-size: 22px;
+    }
+    
+    .calendario-dia {
+        min-height: 80px;
+        padding: 8px 4px;
+    }
+    
+    .calendario-dia-numero {
+        font-size: 16px;
+    }
+    
+    .calendario-header-dia {
+        padding: 12px 4px;
+        font-size: 12px;
+    }
+    
+    .calendario-dia .p-button {
+        width: 24px !important;
+        height: 24px !important;
+        min-width: 24px !important;
+        font-size: 10px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .calendario-titulo {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .calendario-dia {
+        min-height: 70px;
+    }
+    
+    .calendario-dia-acoes {
+        opacity: 1; /* Sempre visível em mobile */
+    }
 }
