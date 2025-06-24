@@ -14,7 +14,7 @@ export class HeaderComponent {
   menus = signal<any[]>([
     {
       label: 'Calendário',
-      icon: 'pi pi-chart-bar',
+      icon: 'pi pi-calendar',
       selected: true,
       route: 'calendario'
     },
